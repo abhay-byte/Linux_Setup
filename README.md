@@ -1,11 +1,10 @@
 
-![Linux Logo](https://raw.githubusercontent.com/saadeghi/saadeghi/master/static/linux.svg)
+![Linux Logo](https://media.tenor.com/y-cCxl8uEw0AAAAM/yetopen.gif)
 
 # 🐧 Linux Setup Scripts 🐧
 
 *Quickly set up your Linux environments using simple `curl` commands!*
 
-![Typing SVG Animation](https://raw.githubusercontent.com/saadeghi/saadeghi/master/static/typing.svg)
 
 ## 🚀 Overview
 
