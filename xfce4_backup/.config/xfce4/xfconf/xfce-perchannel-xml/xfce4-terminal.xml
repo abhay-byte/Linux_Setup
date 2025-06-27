@@ -1,0 +1,9 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+<channel name="xfce4-terminal" version="1.0">
+  <property name="background-mode" type="string" value="TERMINAL_BACKGROUND_TRANSPARENT"/>
+  <property name="background-darkness" type="double" value="0.64000000000000001"/>
+  <property name="font-use-system" type="bool" value="false"/>
+  <property name="font-name" type="string" value="JetBrainsMono Nerd Font 10"/>
+  <property name="misc-show-unsafe-paste-dialog" type="bool" value="false"/>
+</channel>
