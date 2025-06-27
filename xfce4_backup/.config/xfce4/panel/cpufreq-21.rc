@@ -1,0 +1,8 @@
+timeout=0.75
+show_label_governor=false
+keep_compact=true
+one_line=true
+icon_color_freq=true
+fontname=System-ui Italic 10
+show_cpu=-2
+
