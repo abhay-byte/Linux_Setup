@@ -24,18 +24,21 @@ jobs:
             # Step 1: Update pacman and install dependencies
             pacman -Syu --noconfirm
 
-            # Step 2: Configure Chaotic-AUR
+            # Step 2: Initialize pacman-key
+            pacman-key --init
+
+            # Step 3: Configure Chaotic-AUR
             pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
             pacman-key --lsign-key 3056513887B78AEB
             pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
             pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
             echo -e \"[chaotic-aur]\\nInclude = /etc/pacman.d/chaotic-mirrorlist\" >> /etc/pacman.conf
 
-            # Step 3: Configure Arch Linux CN
+            # Step 4: Configure Arch Linux CN
             echo -e \"[archlinuxcn]\\nServer = https://repo.archlinuxcn.org/\$arch\" >> /etc/pacman.conf
             pacman -Syyu --noconfirm archlinuxcn-keyring
 
-            # Step 4: Check package updates
+            # Step 5: Check package updates
             while IFS= read -r package; do
               if pacman -Q $package > /dev/null 2>&1; then
                 echo \"Checking $package...\"
