@@ -1,0 +1,44 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+version: 2
+updates:
+  # Debian APT packages
+  - package-ecosystem: "apt" # Use 'apt' for Debian package manager
+    directory: "/" # The directory where your Debian configuration files are located
+    schedule:
+      interval: "weekly" # Check for updates weekly
+    commit-message:
+      prefix: "deps"
+      include: true
+    labels:
+      - "debian"
+    ignore:
+      - dependency-name: "example-package" # Ignore specific packages if needed
+        versions: ["<1.0.0"] # Specify ignored versions if necessary
+
+  # Arch Linux pacman packages
+  - package-ecosystem: "pacman" # Use 'pacman' for Arch Linux package manager
+    directory: "/" # The directory where your Arch Linux configuration files are located
+    schedule:
+      interval: "weekly" # Check for updates weekly
+    commit-message:
+      prefix: "deps"
+      include: true
+    labels:
+      - "archlinux"
+    ignore:
+      - dependency-name: "example-package" # Ignore specific packages if needed
+        versions: ["<1.0.0"] # Specify ignored versions if necessary
+
+  # General configurations (if managing additional package configurations)
+  - package-ecosystem: "github-actions" # For GitHub Actions workflows, if applicable
+    directory: "/" # Root directory or specific folder
+    schedule:
+      interval: "daily"
+    labels:
+      - "config"
+    commit-message:
+      prefix: "chore"
+      include: true
