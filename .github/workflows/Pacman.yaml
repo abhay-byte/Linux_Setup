@@ -1,4 +1,4 @@
-name: Update Pacman Packages
+name: Check and Update Arch Packages (Including Third-Party Repos)
 
 on:
   schedule:
@@ -6,18 +6,55 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-arch:
+  check-and-update-arch:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
       - name: Run Arch Linux in Docker
-        uses: docker/setup-qemu-action@v2
-
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Pull Arch Linux Docker Image
-        run: docker pull archlinux:latest
-
-      - name: Update Pacman Packages
         run: |
-          docker run --rm archlinux:latest /bin/bash -c "pacman -Syu --noconfirm"
+          # Pull Arch Linux Docker image
+          docker pull archlinux:latest
+
+          # Mount the repository into the Docker container
+          docker run --rm -v $PWD:/workspace archlinux:latest /bin/bash -c "
+            set -e
+            # Step 1: Update pacman and install dependencies
+            pacman -Syu --noconfirm
+
+            # Step 2: Configure Chaotic-AUR
+            pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+            pacman-key --lsign-key 3056513887B78AEB
+            pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+            pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+            echo -e \"[chaotic-aur]\\nInclude = /etc/pacman.d/chaotic-mirrorlist\" >> /etc/pacman.conf
+
+            # Step 3: Configure Arch Linux CN
+            echo -e \"[archlinuxcn]\\nServer = https://repo.archlinuxcn.org/\$arch\" >> /etc/pacman.conf
+            pacman -Syyu --noconfirm archlinuxcn-keyring
+
+            # Step 4: Check package updates
+            while IFS= read -r package; do
+              if pacman -Q $package > /dev/null 2>&1; then
+                echo \"Checking $package...\"
+                if pacman -Qu $package > /dev/null 2>&1; then
+                  echo \"$package has updates available\" >> /workspace/Linux_Setup/Packages/pkglist_arch_x86_updates.txt
+                fi
+              else
+                echo \"$package is not installed.\" >> /workspace/Linux_Setup/Packages/pkglist_arch_x86_updates.txt
+              fi
+            done < /workspace/Linux_Setup/Packages/pkglist_arch_x86.txt
+          "
+
+      - name: Commit and Push Changes (if any)
+        run: |
+          if [ -s Linux_Setup/Packages/pkglist_arch_x86_updates.txt ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add Linux_Setup/Packages/pkglist_arch_x86_updates.txt
+            git commit -m "chore: update Arch Linux package list with available updates"
+            git push
+          else
+            echo "No updates found."
