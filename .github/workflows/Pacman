@@ -1,0 +1,25 @@
+name: Update Pacman Packages
+
+on:
+  schedule:
+    - cron: "0 0 * * 1" # Weekly on Monday
+  workflow_dispatch:
+
+jobs:
+  update-arch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Arch Linux Dependencies
+        run: sudo apt-get install -y arch-install-scripts
+
+      - name: Update Pacman and packages
+        run: |
+          pacman -Syu --noconfirm
+
+      - name: Commit and Push Changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: update Arch Linux Pacman packages" || echo "No changes to commit"
+          git push
