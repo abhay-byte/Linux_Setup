@@ -8,6 +8,7 @@ RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/
 export ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
 echo "🔌 Installing Zsh plugins..."
+
 git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git "$ZSH_CUSTOM/plugins/fast-syntax-highlighting"
@@ -18,13 +19,16 @@ echo "⚙️ Configuring .zshrc..."
 if grep -q "plugins=" ~/.zshrc; then
     sed -i 's/plugins=(.*)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)/' ~/.zshrc
 else
-    echo 'plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)' >> ~/.zshrc
+    echo 'plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting)' >> ~/.zshrc
 fi
 
 # Add random theme if not already set
-if ! grep -q 'ZSH_THEME="random"' ~/.zshrc; then
-    echo 'ZSH_THEME="random"' >> ~/.zshrc
-fi
+echo "🎨 Setting Oh My Zsh theme to random..."
+sed -i 's/^ZSH_THEME=.*$/ZSH_THEME="random"/' ~/.zshrc
+
+
+echo "🐚 Setting Zsh as default shell..."
+chsh -s zshzs
 
 echo "Zsh configuration complete. Restart Termux or run 'zsh' to start using it."
 
@@ -53,11 +57,37 @@ color14=#56d4dd
 color15=#f0f6fc
 EOF
 
-echo "🔤 Installing JetBrainsMono Nerd Font..."
+echo "🔤 Installing FiraCode Nerd Font..."
 mkdir -p ~/.termux
-curl -fsSL https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip -o /tmp/JetBrainsMono.zip
-unzip -o /tmp/JetBrainsMono.zip -d /tmp/JetBrainsMono
-cp /tmp/JetBrainsMono/*.ttf ~/.termux/font.ttf
+
+# Temporary folder for font download and extraction
+TMPFONT="$HOME/tmpfont"
+mkdir -p "$TMPFONT" && cd "$TMPFONT"
+
+# Download Meslo Nerd Font (better for icons)
+curl -fsSL -o meslo.zip \
+  https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip
+
+# Extract only the Regular font directly into ~/.termux
+mkdir -p ~/.termux
+unzip -jo meslo.zip "*Regular.ttf" -d ~/.termux
+
+# Pick one font and rename to font.ttf (overwrite any previous font)
+FONTFILE=$(ls ~/.termux/*Regular.ttf | head -n 1)
+mv "$FONTFILE" ~/.termux/font.ttf
+
+# Clean up zip file
+rm meslo.zip
+
+echo "🎨 Meslo Nerd Font installed as Termux default."
+echo "🔄 Restart Termux to apply the new font."
+
+
+echo "🔄 Reloading Termux settings..."
+termux-reload-settings
+
+echo > $PREFIX/etc/motd
+rm -f $PREFIX/etc/motd
 
 echo "⚡ Configuring fastfetch on startup..."
 if [ -n "$ZSH_VERSION" ]; then
@@ -66,11 +96,13 @@ else
     RCFILE="$HOME/.bashrc"
 fi
 
-if ! grep -q 'clear' "$RCFILE"; then
-    echo 'clear' >> "$RCFILE"
-fi
-if ! grep -q 'fastfetch' "$RCFILE"; then
-    echo 'fastfetch --separator "─"' >> "$RCFILE"
-fi
+# Add clear and fastfetch to startup
+grep -qxF 'clear' "$RCFILE" || echo 'clear' >> "$RCFILE"
+grep -qxF 'fastfetch --config ~/.local/share/fastfetch/presets/groups.jsonc' "$RCFILE" || echo 'fastfetch --config ~/.local/share/fastfetch/presets/groups.jsonc' >> "$RCFILE"
+
+
+
+clear
+
 
 
