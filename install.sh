@@ -1,23 +1,21 @@
 #!/bin/bash
 
-BASE_URL="https://raw.githubusercontent.com/YourUser/YourRepo/main"
+BASE_URL="https://raw.githubusercontent.com/abhay-byte/Linux_Setup/dev"
 
 echo "Installing Necessary Packages..."
 
-# Add extra repositories (no confirmation)
 yes | pkg install tur-repo root-repo x11-repo science-repo
 
-# Update and upgrade Termux packages automatically
 yes | pkg update
+
 yes | pkg upgrade
 
-# Install required packages without prompts
-yes | pkg install termux-x11-nightly pulseaudio proot-distro wget git curl vim
+yes | pkg install x11-repo termux-x11-nightly tur-repo pulseaudio proot-distro wget git curl zsh vim unzip python nodejs neofetch tar fastfetch
 
 read -rp "Do you want to install Termux tweaks? (y/n): " tweaks_choice
 if [[ "$tweaks_choice" =~ ^[Yy]$ ]]; then
     echo "Installing Termux tweaks..."
-    bash termux-tweaks.sh
+    curl -fsSL "$BASE_URL/scripts/termux-tweaks.sh" | bash
 else
     echo "Skipping Termux tweaks."
 fi
@@ -28,16 +26,19 @@ echo "2) Arch Linux"
 echo "3) Debian"
 read -rp "Enter choice [1-3]: " distro_choice
 
+
 case "$distro_choice" in
     1)
         echo "Running native Termux installation..."
-        bash native-install.sh
+        curl -fsSL "$BASE_URL/scripts/native-install.sh" | bash
         ;;
     2)
-        echo "You selected Arch Linux. Add your Arch install script here."
+        echo "Running Arch Linux installation..."
+        curl -fsSL "$BASE_URL/scripts/arch-install.sh" | bash
         ;;
     3)
-        echo "You selected Debian. Add your Debian install script here."
+        echo "Running Debian installation..."
+        curl -fsSL "$BASE_URL/scripts/debian-install.sh" | bash
         ;;
     *)
         echo "Invalid choice. Please enter 1, 2, or 3."
