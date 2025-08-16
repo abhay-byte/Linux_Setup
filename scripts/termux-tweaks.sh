@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#to install - curl -fsSL https://raw.githubusercontent.com/abhay-byte/Linux_Setup/refs/heads/dev/scripts/termux-tweaks-standalone.sh | bash
+
+clear
+
 echo "🐚 Installing Oh My Zsh..."
 # Run Oh My Zsh installer non-interactively
 RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -17,7 +21,7 @@ git clone --depth 1 https://github.com/marlonrichert/zsh-autocomplete.git "$ZSH_
 echo "⚙️ Configuring .zshrc..."
 # Update plugins line to include all plugins (avoid duplicates)
 if grep -q "plugins=" ~/.zshrc; then
-    sed -i 's/plugins=(.*)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting zsh-autocomplete)/' ~/.zshrc
+    sed -i 's/plugins=(.*)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting)/' ~/.zshrc
 else
     echo 'plugins=(git zsh-autosuggestions zsh-syntax-highlighting fast-syntax-highlighting)' >> ~/.zshrc
 fi
@@ -90,19 +94,28 @@ echo > $PREFIX/etc/motd
 rm -f $PREFIX/etc/motd
 
 echo "⚡ Configuring fastfetch on startup..."
+
+cd ~/.local/share
+git clone https://github.com/LierB/fastfetch
+
+# Detect shell RC file
 if [ -n "$ZSH_VERSION" ]; then
     RCFILE="$HOME/.zshrc"
-else
+elif [ -n "$BASH_VERSION" ]; then
     RCFILE="$HOME/.bashrc"
+else
+    RCFILE="$HOME/.profile"
 fi
 
-# Add clear and fastfetch to startup
+# Append clear if not already present
 grep -qxF 'clear' "$RCFILE" || echo 'clear' >> "$RCFILE"
-grep -qxF 'fastfetch --config ~/.local/share/fastfetch/presets/groups.jsonc' "$RCFILE" || echo 'fastfetch --config ~/.local/share/fastfetch/presets/groups.jsonc' >> "$RCFILE"
 
+# Append fastfetch startup command if not already present
+grep -qxF 'fastfetch --config ~/.local/share/fastfetch/presets/groups.jsonc' "$RCFILE" || \
+    echo 'fastfetch --config ~/.local/share/fastfetch/presets/groups.jsonc' >> "$RCFILE"
 
+echo "✅ Fastfetch configured to run on startup in $RCFILE"
 
-clear
 
 
 
