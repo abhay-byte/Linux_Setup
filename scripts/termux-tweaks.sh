@@ -95,11 +95,11 @@ rm -f $PREFIX/etc/motd
 
 echo "⚡ Configuring fastfetch on startup..."
 
-mkdir -p ~/.config/fastfetch
+mkdir -p ~/.local/share/fastfetch/presets
 
 # Download your chosen config directly to termux.jsonc
 curl -fsSL https://raw.githubusercontent.com/abhay-byte/Linux_Setup/dev/config/termux.jsonc \
-    -o ~/.config/fastfetch/termux.jsonc
+    -o ~/.local/share/fastfetch/presets/termux.jsonc
 
 # Detect shell RC file
 if [ -n "$ZSH_VERSION" ]; then
