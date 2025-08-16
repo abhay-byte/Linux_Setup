@@ -1,0 +1,75 @@
+//   _____ _____ _____ _____ _____ _____ _____ _____ _____ 
+//  |   __|  _  |   __|_   _|   __|   __|_   _|     |  |  |
+//  |   __|     |__   | | | |   __|   __| | | |   --|     |
+//  |__|  |__|__|_____| |_| |__|  |_____| |_| |_____|__|__|  MINIMAL
+//
+//  by Bina, Modified by abhay
+
+
+{
+    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+    "logo": null,
+    "display": {
+        "separator": " ›  "
+    },
+    "modules": [
+	"break",
+        {
+            "type": "os",
+            "key": "OS  ",
+            "keyColor": "31",  // = color1
+        },
+        {
+            "type": "kernel",
+            "key": "KER ",
+            "keyColor": "32",
+        },
+        {
+            "type": "cpu",
+            "key": "CPU ",
+            "keyColor": "37",
+        },
+        {
+            "type": "gpu",
+            "key": "GPU ",
+            "keyColor": "38",
+        },
+        {
+            "type": "packages",
+            "format": "{} (pacman)",
+            "key": "PKG ",
+            "keyColor": "33",  
+        },
+        {
+            "type": "shell",
+            "key": "SH  ",
+            "keyColor": "34", 
+        },
+        {
+            "type": "terminal",
+            "key": "TER ",
+            "keyColor": "35", 
+        },
+        {
+            "type": "wm",
+            "key": "WM  ",
+            "keyColor": "36", 
+        },
+        {
+            "type": "vulkan",
+            "key": "VK  ",
+            "keyColor": "40", 
+        },
+        {
+            "type": "opengl",
+            "key": "ES  ",
+            "keyColor": "41", 
+        },
+        {
+            "type": "openclwm",
+            "key": "CL  ",
+            "keyColor": "42", 
+        },
+        "break",
+    ]
+}

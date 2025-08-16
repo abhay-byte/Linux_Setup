@@ -95,8 +95,11 @@ rm -f $PREFIX/etc/motd
 
 echo "⚡ Configuring fastfetch on startup..."
 
-cd ~/.local/share
-git clone https://github.com/LierB/fastfetch
+mkdir -p ~/.config/fastfetch
+
+# Download your chosen config directly to termux.jsonc
+curl -fsSL https://raw.githubusercontent.com/abhay-byte/Linux_Setup/dev/config/termux.jsonc \
+    -o ~/.config/fastfetch/termux.jsonc
 
 # Detect shell RC file
 if [ -n "$ZSH_VERSION" ]; then
@@ -107,14 +110,11 @@ else
     RCFILE="$HOME/.profile"
 fi
 
-# Append clear if not already present
+# Add startup commands if not already present
 grep -qxF 'clear' "$RCFILE" || echo 'clear' >> "$RCFILE"
+grep -qxF 'fastfetch --config termux' "$RCFILE" || echo 'fastfetch --config termux' >> "$RCFILE"
 
-# Append fastfetch startup command if not already present
-grep -qxF 'fastfetch --config ~/.local/share/fastfetch/presets/groups.jsonc' "$RCFILE" || \
-    echo 'fastfetch --config ~/.local/share/fastfetch/presets/groups.jsonc' >> "$RCFILE"
-
-echo "✅ Fastfetch configured to run on startup in $RCFILE"
+echo "🎨 Fastfetch configured. Restart Termux to see the new preset."
 
 
 
