@@ -26,10 +26,10 @@ if ! grep -q 'ZSH_THEME="random"' ~/.zshrc; then
     echo 'ZSH_THEME="random"' >> ~/.zshrc
 fi
 
-echo "✅ Zsh configuration complete. Restart Termux or run 'zsh' to start using it."
+echo "Zsh configuration complete. Restart Termux or run 'zsh' to start using it."
 
 
-echo "🎨 Applying GitHub Dark color scheme..."
+echo "🎨Applying GitHub Dark color scheme..."
 mkdir -p ~/.termux
 cat > ~/.termux/colors.properties << 'EOF'
 foreground=#c9d1d9
@@ -66,8 +66,11 @@ else
     RCFILE="$HOME/.bashrc"
 fi
 
-# Append fastfetch line if not already present
+if ! grep -q 'clear' "$RCFILE"; then
+    echo 'clear' >> "$RCFILE"
+fi
 if ! grep -q 'fastfetch' "$RCFILE"; then
     echo 'fastfetch --separator "─"' >> "$RCFILE"
 fi
+
 

@@ -2,15 +2,7 @@
 
 BASE_URL="https://raw.githubusercontent.com/abhay-byte/Linux_Setup/dev"
 
-echo "Installing Necessary Packages..."
-
-yes | pkg install tur-repo root-repo x11-repo science-repo
-
-yes | pkg update
-
-yes | pkg upgrade
-
-yes | pkg install x11-repo termux-x11-nightly tur-repo pulseaudio proot-distro wget git curl zsh vim unzip python nodejs neofetch tar fastfetch
+curl -fsSL "$BASE_URL/scripts/install-dependecies.sh" | bash
 
 read -rp "Do you want to install Termux tweaks? (y/n): " tweaks_choice
 if [[ "$tweaks_choice" =~ ^[Yy]$ ]]; then
