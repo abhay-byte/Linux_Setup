@@ -10,4 +10,4 @@ yes | pkg update
 
 yes | pkg upgrade
 
-yes | pkg install x11-repo termux-x11-nightly tur-repo pulseaudio proot-distro wget git curl zsh vim unzip python nodejs neofetch tar fastfetch
+yes | pkg install x11-repo termux-x11-nightly tur-repo pulseaudio proot-distro wget git curl zsh vim unzip python nodejs tar fastfetch

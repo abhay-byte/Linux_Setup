@@ -31,8 +31,6 @@ echo "🎨 Setting Oh My Zsh theme to random..."
 sed -i 's/^ZSH_THEME=.*$/ZSH_THEME="random"/' ~/.zshrc
 
 
-echo "🐚 Setting Zsh as default shell..."
-chsh -s zshzs
 
 echo "Zsh configuration complete. Restart Termux or run 'zsh' to start using it."
 
@@ -116,6 +114,6 @@ grep -qxF 'fastfetch --config termux' "$RCFILE" || echo 'fastfetch --config term
 
 echo "🎨 Fastfetch configured. Restart Termux to see the new preset."
 
-
-
+echo "🐚 Setting Zsh as default shell..."
+chsh -s zshzs
 
