@@ -63,6 +63,17 @@ Enhances your base Termux environment with essential packages (including `proot-
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/abhay-byte/Linux_Setup/main/setup_termux.sh)"
 ```
 
+
+### 4.  `termux-tweaks.sh` - Termux Enhancement Script | No Proot distro
+
+Enhances your base Termux environment with essential packages like My Zsh, and useful Zsh plugins.
+
+**To install and run (directly in Termux):**
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/abhay-byte/Linux_Setup/refs/heads/dev/scripts/termux-tweaks-standalone.sh)
+```
+
 ---
 
 ## 🤝 Contributing

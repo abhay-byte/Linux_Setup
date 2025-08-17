@@ -1,8 +1,7 @@
 #!/bin/sh
 
 # to install:
-# curl -fsSL https://raw.githubusercontent.com/abhay-byte/Linux_Setup/refs/heads/dev/scripts/termux-tweaks-standalone.sh | sh
-
+# bash <(curl -fsSL https://raw.githubusercontent.com/abhay-byte/Linux_Setup/refs/heads/dev/scripts/termux-tweaks-standalone.sh)
 clear
 
 install_ohmyzsh() {
@@ -160,27 +159,14 @@ configure_fastfetch() {
     curl -fsSL https://raw.githubusercontent.com/abhay-byte/Linux_Setup/dev/config/termux.jsonc \
         -o ~/.local/share/fastfetch/presets/termux.jsonc
 
-    if [ -n "$ZSH_VERSION" ]; then
-        RCFILE="$HOME/.zshrc"
-    elif [ -n "$BASH_VERSION" ]; then
-        RCFILE="$HOME/.bashrc"
-    else
-        RCFILE="$HOME/.profile"
-    fi
-
+    RCFILE="$HOME/.zshrc"
     [ -f "$RCFILE" ] || touch "$RCFILE"
 
+    # Add fastfetch at top if missing
     if ! grep -q 'fastfetch --config termux' "$RCFILE"; then
-        echo 'fastfetch --config termux' >> "$RCFILE"
+        sed -i '1ifastfetch --config termux' "$RCFILE"
     fi
 
-    if ! grep -q '^clear$' "$RCFILE"; then
-        if grep -q 'fastfetch --config termux' "$RCFILE"; then
-            sed -i '/fastfetch --config termux/i clear' "$RCFILE"
-        else
-            echo 'clear' >> "$RCFILE"
-        fi
-    fi
 
     echo "🎨 Fastfetch configured. Restart Termux to see it."
     echo "🐚 Setting Zsh as default shell..."
