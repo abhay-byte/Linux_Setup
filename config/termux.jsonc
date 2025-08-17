@@ -56,6 +56,11 @@
             "keyColor": "36", 
         },
         {
+            "type": "disk",
+            "key": "DSK  ",
+            "keyColor": "37", 
+        },
+        {
             "type": "memory",
             "key": "MEM  ",
             "keyColor": "44", 
@@ -64,11 +69,6 @@
             "type": "swap",
             "key": "SWP  ",
             "keyColor": "43", 
-        },
-        {
-            "type": "disk",
-            "key": "DSK  ",
-            "keyColor": "45", 
         },
         {
             "type": "vulkan",
@@ -83,11 +83,6 @@
         {
             "type": "opencl",
             "key": "CL  ",
-            "keyColor": "42", 
-        },
-        {
-            "type": "weather",
-            "key": "WC  ",
             "keyColor": "42", 
         },
         "break",
